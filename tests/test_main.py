@@ -31,6 +31,14 @@ def test_run_swallows_keyboard_interrupt():
     assert "CancelledError" in src_async
 
 
+def test_main_uses_single_instance_guard():
+    from main import main
+
+    src = inspect.getsource(main)
+    assert "try_acquire_single_instance" in src
+    assert "sys.exit(0)" in src
+
+
 
 
 

@@ -2,7 +2,7 @@
 
 Windows tray app that shows wireless peripheral battery levels.
 
-**v1.0.1** — created by Marco
+**v1.0.2** — created by Marco
 
 ## Supported
 

@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 import threading
 
 import autostart
 from aggregator import aggregate_battery_devices
 from models import DeviceRecord
+from single_instance import try_acquire_single_instance
 from tray_app import TrayApp
+from version import APP_NAME
 
 REFRESH_SECONDS = 60
 
@@ -64,5 +67,16 @@ class App:
             self._tray.stop()
 
 
+def main() -> None:
+    lock = try_acquire_single_instance(APP_NAME)
+    if lock is None:
+        # Second launch: exit quietly (already running in tray).
+        sys.exit(0)
+    try:
+        App().run()
+    finally:
+        lock.release()
+
+
 if __name__ == "__main__":
-    App().run()
+    main()
